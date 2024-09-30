@@ -1,5 +1,5 @@
 import pytest
-from EjerciciosU1.ej04_def2 import grados_celsius
+from src.ej04_def2 import grados_celsius
 
 def test_grados_celsius():
     # Pruebas directas con diferentes valores de Fahrenheit

@@ -1,5 +1,5 @@
 import pytest
-from EjerciciosU1.ej02_def import calculo_salario
+from src.ej02_def import calculo_salario
 
 def test_calculo_salario():
     assert calculo_salario(10, 10) == 100

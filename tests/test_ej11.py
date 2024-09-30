@@ -1,5 +1,5 @@
 import pytest
-from EjerciciosU1.ej11_def import suma_numeros
+from src.ej11_def import suma_numeros
 
 def test_suma_numeros():
     assert suma_numeros(5) == "La suma de los números del 1 al 5 es 15."

@@ -1,5 +1,5 @@
 import pytest
-from EjerciciosU1.ej05_def2 import calcula_precio
+from src.ej05_def2 import calcula_precio
 
 def test_calcula_precio():
     assert calcula_precio(100, 21) == "El precio final del artículo con IVA (21.00) es 121.00€."
