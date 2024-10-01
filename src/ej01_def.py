@@ -3,6 +3,8 @@
 # Escribe un programa que pida el nombre del usuario para luego darle la bienvenida.
 #
 
+import os
+
 def saludo(nombre):
     nombre = nombre.strip()
     if not nombre:
@@ -50,6 +52,13 @@ def titular_v3(frase):
         lista_palabras[i] = lista_palabras[i][0:1].upper() + lista_palabras[i][1:].lower() + " "
 
     return " ".join(lista_palabras)
+
+
+def limpiar_pantalla():
+    if os.name == 'nt':  # 'nt' es Windows
+        os.system('cls')
+    else:
+        os.system('clear')
 
 
 def main():
