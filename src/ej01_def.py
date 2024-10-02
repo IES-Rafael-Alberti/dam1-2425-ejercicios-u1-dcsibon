@@ -62,6 +62,7 @@ def limpiar_pantalla():
 
 
 def main():
+    limpiar_pantalla()
     print(saludo(input("Escribe tu nombre: ")))
 
 
