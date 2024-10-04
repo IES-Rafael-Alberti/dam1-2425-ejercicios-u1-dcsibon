@@ -1,5 +1,5 @@
 import pytest
-from src.main import suma
+from otros.main import suma
 
 def test_suma():
     assert suma(10, 20) == 30
