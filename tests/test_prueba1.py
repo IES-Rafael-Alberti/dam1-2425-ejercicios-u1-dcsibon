@@ -1,6 +1,6 @@
 import pytest
 
-from src.prueba1 import  es_mayor
+from otros.prueba1 import  es_mayor
 
 
 def test_es_mayor():
