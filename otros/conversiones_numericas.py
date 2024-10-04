@@ -3,6 +3,18 @@ def comprobar_entero(valor: str) -> bool:
     return valor.isdigit() or (valor.startswith("-") and valor[1:].isdigit())
 
 
+def es_hexadecimal(valor: str) -> bool:
+    for i in range(len(valor)):
+        if valor_posicion(valor[i]) == 0:
+            return False
+    return True
+
+
+def comprobar_valor_base(valor: str) -> bool:
+    """Comprobar si un valor de una cadena de caracteres es un número en bases binaria, octa, decimal o hexadecimal"""
+    return valor.isdigit() or es_hexadecimal(valor)
+
+
 def calcular_resto(valor: int) -> str:
     if valor < 10:
         resto += str(valor)
