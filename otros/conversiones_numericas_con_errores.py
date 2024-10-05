@@ -21,21 +21,21 @@ def comprobar_valor_base(valor: str) -> bool:
 
 def calcular_resto(valor: int) -> str:
     if valor < 10:
-        resto = str(valor)
+        resto += str(valor)
     elif valor == 10:
-        resto = 'A'
+        resto += 'A'
     elif valor == 11:
-        resto = 'B'
+        resto += 'B'
     elif valor == 12:
-        resto = 'C'
+        resto += 'C'
     elif valor == 13:
-        resto = 'D'
+        resto += 'D'
     elif valor == 14:
-        resto = 'E'
+        resto += 'E'
     elif valor == 15:
-        resto = 'F'
+        resto += 'F'
     else:
-        resto = ''
+        resto += ''
 
     return resto
 
@@ -70,12 +70,12 @@ def convertir_decimal_a_otra_base(valor: str, base: int) -> str:
     
     while cociente >= base:
         resto = cociente % base
-        cociente = cociente // base
+        cociente = cociente / base
         resultado += calcular_resto(resto)
 
-    resultado += str(cociente)
+    resultado += cociente
 
-    return resultado[::-1]
+    return resultado[1::-1]
 
 
 def convertir_decimal_binario(valor: str) -> str:
@@ -91,7 +91,6 @@ def convertir_decimal_hexadecimal(valor: str) -> str:
 
 
 def convertir_a_base_decimal(valor: str, base: int) -> int:
-    resultado = 0
     for i in range(len(valor)):
         resultado += valor_posicion(valor[i]) * base
 
@@ -138,8 +137,7 @@ def dame_nombre_base(base: int) -> str:
 
 def main():
     #
-    # DCS: Pendiente...
-    # Ver cómo convertir los números negativos o sino no permitir que lo introduzcan...
+    # DCS: Corrige los errores para que este código funcione correctamente
     #
     valor = introduce_numero("Introduce el valor a convertir (solo números positivos): ")
     base1 = introduce_base("\nIndica la base del número introducido (2, 8, 10 o 16): ")
