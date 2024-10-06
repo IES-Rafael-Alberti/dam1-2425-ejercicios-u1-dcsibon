@@ -1,4 +1,14 @@
 
+def limpiar_pantalla():
+    """
+    Limpia la consola.
+    """
+    if os.name == 'nt': # Si el sistema es Windows
+        os.system('cls')
+    else: # Si el sistema es Linux o macOS
+        os.system('clear')
+
+
 def comprobar_entero_positivo(valor: str) -> bool:
     return valor.isdigit()
 
