@@ -1,8 +1,4 @@
 
-def comprobar_entero(valor: str) -> bool:
-    return valor.isdigit() or (valor.startswith("-") and valor[1:].isdigit())
-
-
 def comprobar_entero_positivo(valor: str) -> bool:
     return valor.isdigit()
 
@@ -40,7 +36,7 @@ def calcular_resto(valor: int) -> str:
     return resto
 
 
-def valor_posicion(posicion: str) -> str:
+def valor_posicion(posicion: str) -> int:
     if posicion.isdigit():
         resultado = int(posicion)
     elif posicion == 'A':
@@ -125,6 +121,15 @@ def introduce_numero(msj: str) -> str:
 
 
 def dame_nombre_base(base: int) -> str:
+    """
+    Retorna el nombre de la base en una cadena de caracteres.
+    
+    Args:
+        base (int): número de dígitos del sistema de numeración (2, 8, 10 o 16).
+
+    Returns:
+        str: el nombre que recibe la base (por ejemplo: 2 => binaria)
+    """
     if base == 2:
         return "binaria"
     elif base == 8:
@@ -137,7 +142,12 @@ def dame_nombre_base(base: int) -> str:
 
 def main():
     #
-    # DCS: Corrige los errores para que este código funcione correctamente
+    # Tareas a realizar:
+    # 1 - Corrige los errores para que este código funcione correctamente, comentar el error y su solución.
+    # 2 - Haz que el programa solo termine cuando se introduzca ENTER en la primera pregunta. Cuando realice una conversión, limpiar pantalla y volver a preguntar.
+    # 3 - Cuando acabe el programa, justo antes debe mostrar un mensaje con el número de conversiones realizadas.
+    # 4 - Desarrolla la conversión de números negativos. Muy simple, permitiendo números negativos y la conversión debe llevar el mismo signo negativo.
+    # 5 - Utiliza DocStrings para documentar todas las funciones del código explicando brevemente que hace cada una. Ver ejemplo en la función dame_nombre_base().
     #
     valor = introduce_numero("Introduce el valor a convertir (solo números positivos): ")
     base1 = introduce_base("\nIndica la base del número introducido (2, 8, 10 o 16): ")
