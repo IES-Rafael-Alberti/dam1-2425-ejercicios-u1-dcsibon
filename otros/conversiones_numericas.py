@@ -1,8 +1,8 @@
 import os
 
-SIMBOLOS = ["0", "1", "2", "3", "4", "5", 
+SIMBOLOS = ("0", "1", "2", "3", "4", "5", 
             "6", "7", "8", "9", "A", "B", 
-            "C", "D", "E", "F"]
+            "C", "D", "E", "F")
 
 BASE_BINARIA = 2
 BASE_OCTAL = 8
@@ -120,7 +120,9 @@ def comprobar_valor_base(valor: str, base) -> bool:
     Returns:
         bool: True si el valor es válido en la base dada, False en caso contrario.
     """
-    if base == BASE_BINARIA:
+    if valor == "" or valor == "-":
+        return False
+    elif base == BASE_BINARIA:
         return es_binario(valor)
     elif base == BASE_OCTAL:
         return es_octal(valor)
@@ -232,8 +234,11 @@ def convertir_numero_a_otra_base(valor: str, base1: int, base2: int) -> str:
     Returns:
         str: El número convertido a la base destino.
     """
-    simbolo_primera_posicion = "-" if valor.startswith("-") else ""
-    valor = valor[1:]
+    if valor.startswith("-"):
+        simbolo_primera_posicion = "-"
+        valor = valor[1:]
+    else:
+        simbolo_primera_posicion = ""
 
     # Convertir a base decimal
     if base1 != 10:
@@ -264,7 +269,7 @@ def introduce_base(msj: str, permitir_entrada_vacia: bool = False) -> int:
     while True:
         base = input(msj).strip()
         
-        if base == "":
+        if permitir_entrada_vacia and base == "":
             return None
         
         if base not in ('2', '8', '10', '16'):
@@ -336,7 +341,7 @@ def main():
 
         if base1 == None:
             if desea_salir():
-                mensaje_salida = f"\nHas realizado {contador_conversiones} {'conversión' if contador_conversiones == 1 else 'conversiones'}.\n"
+                print(f"\nHas realizado {contador_conversiones} {'conversión' if contador_conversiones == 1 else 'conversiones'}.\n")
                 return
             else:
                 continue
@@ -345,7 +350,7 @@ def main():
 
         base2 = introduce_base("\nIndica la base de numeración a la que quieres convertir el número (2, 8, 10 o 16): ")
         
-        print(f"\nEl número {valor} en base {dame_nombre_base(base1)} es el {convertir_numero_a_otra_base(valor, base1, base2)} en base {dame_nombre_base(base2)}")
+        print(f"\nEl número \"{valor}\" en base {dame_nombre_base(base1)} es el \"{convertir_numero_a_otra_base(valor, base1, base2)}\" en base {dame_nombre_base(base2)}.")
         contador_conversiones += 1
         input("\n\nPresione ENTER para continuar...")
 
