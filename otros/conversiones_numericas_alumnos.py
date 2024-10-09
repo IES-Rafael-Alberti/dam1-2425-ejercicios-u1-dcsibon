@@ -5,8 +5,7 @@ BASE_BINARIA = 2
 BASE_OCTAL = 8
 BASE_DECIMAL = 10
 BASE_HEXADECIMAL = 16
-MENSAJE_ERROR_BASE_GENERAL = "**ERROR** no ha introducido una base correcta!\n"
-MENSAJE_ERROR_BASE_IGUAL = "**ERROR** La base de destino no puede ser igual a la base de origen ({base})."
+MENSAJE_ERROR_BASE = "**ERROR** no ha introducido una base correcta!\n"
 MENSAJE_ERROR_NUMERO = "**ERROR** el número '{numero}' no es válido para la base {base}!\n"
 
 
@@ -22,73 +21,121 @@ def limpiar_pantalla():
         os.system('clear')
 
 
-def realiza_pausa():
+def comprobar_entero(valor: str) -> bool:
     """
-    Pausa la ejecución del programa hasta que el usuario presione ENTER.
-    
-    Esta función muestra un mensaje que solicita al usuario presionar ENTER para continuar. 
-    Es útil para dar tiempo al usuario a leer la salida antes de que el programa continúe 
-    ejecutándose o finalice.
-    """
-    input("\nPresione ENTER para continuar...")
+    Comprueba si una cadena de caracteres representa un número entero.
 
-
-def es_valido_en_base(valor: str, base: int) -> bool:
-    """
-    Comprueba si una cadena de caracteres es válida en la base dada.
-    
     Args:
-        valor (str): El número en formato de cadena de caracteres.
-        base (int): La base numérica (2, 8, 10, 16).
-    
+        valor (str): La cadena de caracteres a comprobar.
+
     Returns:
-        bool: True si el valor es válido en la base dada, False en caso contrario.
+        bool: True si es un número entero válido, False en caso contrario.
     """
     if valor.startswith("-"):
-        valor = valor[1:]
-
-    if valor == "":
         return False
 
-    for digito in valor:
-        valor_numerico = valor_simbolo(digito)
-        if valor_numerico == -1 or valor_numerico >= base:
+    return valor.isdigit() or (valor.startswith("-") and valor[1:].isdigit())
+
+
+def es_hexadecimal(valor: str) -> bool:
+    """
+    Comprueba si una cadena de caracteres es un número en base hexadecimal.
+
+    Args:
+        valor (str): La cadena de caracteres a comprobar.
+
+    Returns:
+        bool: True si es hexadecimal, False en caso contrario.
+    """
+    if valor.startswith("-"):
+        return False
+
+    for i in range(len(valor)):
+        if valor_simbolo(valor[i]) == -1:
             return False
-        
     return True
 
 
-def comprobar_valor_base(valor: str, base: int) -> bool:
+def es_decimal(valor: str) -> bool:
+    """
+    Comprueba si una cadena de caracteres es un número en base decimal.
+
+    Args:
+        valor (str): La cadena de caracteres a comprobar.
+
+    Returns:
+        bool: True si es decimal, False en caso contrario.
+    """
+    return comprobar_entero(valor)
+
+
+def es_octal(valor: str) -> bool:
+    """
+    Comprueba si una cadena de caracteres es un número en base octal.
+
+    Args:
+        valor (str): La cadena de caracteres a comprobar.
+
+    Returns:
+        bool: True si es octal, False en caso contrario.
+    """
+    if valor.startswith("-"):
+        return False
+
+    for i in range(len(valor)):
+        valor_numerico = valor_simbolo(valor[i])
+        if valor_numerico > 7 or valor_numerico == -1:
+            return False
+    return True
+
+
+def es_binario(valor: str) -> bool:
+    """
+    Comprueba si una cadena de caracteres es un número en base binaria.
+
+    Args:
+        valor (str): La cadena de caracteres a comprobar.
+
+    Returns:
+        bool: True si es binario, False en caso contrario.
+    """
+    if valor.startswith("-"):
+        return False
+
+    for i in range(len(valor)):
+        valor_numerico = valor_simbolo(valor[i])
+        if valor_numerico > 1 or valor_numerico == -1:
+            return False
+    return True
+
+
+def comprobar_valor_base(valor: str, base) -> bool:
     """
     Comprueba si una cadena de caracteres es válida en una base dada.
-    
+
     Args:
-        valor (str): El número a comprobar.
+        valor (str): La cadena de caracteres a comprobar.
         base (int): La base numérica (2, 8, 10, 16).
-    
+
     Returns:
-        bool: True si es válido, False en caso contrario.
+        bool: True si el valor es válido en la base dada, False en caso contrario.
     """
-    return es_valido_en_base(valor, base)
+    if valor == "" or valor == "-":
+        return False
+    elif base == BASE_BINARIA:
+        return es_binario(valor)
+    elif base == BASE_OCTAL:
+        return es_octal(valor)
+    elif base == BASE_DECIMAL:
+        return es_decimal(valor)
+    elif base == BASE_HEXADECIMAL:
+        return es_hexadecimal(valor)
+    else:
+        return False
 
 
 def dame_simbolo(valor: int) -> str:
-    """
-    Retorna el símbolo correspondiente a un valor en base hexadecimal.
-
-    Args:
-        valor (int): El valor entero entre 0 y 15.
-
-    Returns:
-        str: El símbolo correspondiente al valor.
-
-    Raises:
-        ValueError: Si el valor está fuera del rango permitido.
-    """
-    if valor not in range(len(SIMBOLOS)):
-        raise ValueError(f"Valor {valor} fuera del rango hexadecimal permitido.")
-    
-    return SIMBOLOS[valor]
+    pass
 
 
 def valor_simbolo(posicion: str) -> int:
@@ -219,29 +266,7 @@ def validar_base(base: str) -> bool:
     return base in ('2', '8', '10', '16')
 
 
-def dame_nombre_base(base: int) -> str:
-    """
-    Retorna el nombre de la base numérica.
-
-    Args:
-        base (int): El valor numérico de la base (2, 8, 10, 16).
-
-    Returns:
-        str: El nombre descriptivo de la base (por ejemplo, 'binaria').
-    """
-    if base == BASE_BINARIA:
-        return "binaria"
-    elif base == BASE_OCTAL:
-        return "octal"
-    elif base == BASE_DECIMAL:
-        return "decimal"
-    elif base == BASE_HEXADECIMAL:
-        return "hexadecimal"
-    else:
-        return "desconocida"
-
-
-def introduce_base(msj: str, permitir_entrada_vacia: bool = False, base_origen: int = None) -> int:
+def introduce_base(msj: str) -> int:
     """
     Solicita al usuario una base numérica válida (2, 8, 10 o 16).
 
@@ -258,32 +283,15 @@ def introduce_base(msj: str, permitir_entrada_vacia: bool = False, base_origen: 
     while not base_valida:
         base = input(msj).strip()
         
-        if permitir_entrada_vacia and base == "":
-            return None
-        
         base_valida = validar_base(base)
         
-        if base_valida and base_origen is not None and int(base) == base_origen:
-            print(MENSAJE_ERROR_BASE_IGUAL.format(base = dame_nombre_base(base_origen)))
-            base_valida = False 
-
         if not base_valida:
-            print(MENSAJE_ERROR_BASE_GENERAL)
+            print(MENSAJE_ERROR_BASE)
 
     return int(base)
 
 
 def introduce_numero(msj: str, base: int) -> str:
-    """
-    Solicita al usuario un número válido para la base dada.
-
-    Args:
-        msj (str): El mensaje a mostrar al usuario.
-        base (int): La base numérica en la que debe estar el número.
-
-    Returns:
-        str: El número introducido por el usuario.
-    """
     numero_valido = False
     valor = None
     
@@ -297,41 +305,15 @@ def introduce_numero(msj: str, base: int) -> str:
     return valor
 
 
-def desea_salir() -> bool:
+def realizar_conversion():
     """
-    Pregunta al usuario si desea salir del programa.
-
-    Returns:
-        bool: True si el usuario desea salir, False en caso contrario.
-    """
-    salir = input("\n¿Desea salir del programa? (S/N) ").upper()
-    return salir in {'S', 'SI', 'Y', 'YES'}
-
-
-def realizar_conversion() -> bool:
-    """
-    Gestiona el proceso de conversión de un número de una base a otra.
-
-    El usuario introduce la base del número a convertir, el número en esa base, 
-    y la base de destino. Si la conversión se realiza con éxito, el resultado 
-    se muestra. En caso de error (como un número no válido), se indica que la 
-    conversión falló. También se realiza una pausa al final para que el usuario 
-    pueda ver el resultado antes de que el programa continúe o termine.
-
-    Returns:
-        bool: True si la conversión se realizó con éxito, False si hubo algún error.
-               Devuelve None si el usuario decide salir del programa al introducir
-               una cadena vacía para la base de origen.
-    """
-    limpiar_pantalla()
-    
-    base1 = introduce_base("\nIndica la base del número que vas a introducir (2, 8, 10 o 16): ", True)
-    if base1 is None:
-        return None # Indica que el usuario desea salir de la aplicación
+    Gestiona el flujo de conversión de un número introducido por el usuario.
+    """   
+    base1 = introduce_base("\nIndica la base del número que vas a introducir (2, 8, 10 o 16): ")
 
     valor = introduce_numero("\nIntroduce el valor del número a convertir: ", base1)
 
-    base2 = introduce_base("\nIndica la base de numeración a la que quieres convertir el número (2, 8, 10 o 16): ", base_origen = base1)
+    base2 = introduce_base("\nIndica la base de numeración a la que quieres convertir el número (2, 8, 10 o 16): ")
     
     resultado = convertir_numero_a_otra_base(valor, base1, base2)
 
@@ -341,30 +323,12 @@ def realizar_conversion() -> bool:
     if estado_conversion:
         print(f"\nEl número \"{valor}\" en base {dame_nombre_base(base1)} es el \"{resultado}\" en base {dame_nombre_base(base2)}.")
 
-    realiza_pausa()
-
-    return estado_conversion
-
 
 def main():
     """
     Función principal que coordina la interacción con el usuario y la conversión de bases numéricas.
     """
-    contador_conversiones = 0
-    salir = False
-
-    while not salir:
-        exito = realizar_conversion()
-        
-        if exito:
-            contador_conversiones += 1
-        elif exito is None:
-            salir = desea_salir()
-    
-    if contador_conversiones > 0:
-        print(f"\nHas realizado {contador_conversiones} {'conversión' if contador_conversiones == 1 else 'conversiones'}.\n")
-    else:
-        print("\nNo has realizado ninguna conversión.\n")
+    realizar_conversion()
 
 
 
