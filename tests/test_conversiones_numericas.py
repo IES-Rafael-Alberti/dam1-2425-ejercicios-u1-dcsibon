@@ -1,6 +1,6 @@
 
 import pytest
-from otros.conversiones_numericas import introduce_base, introduce_numero
+from practica_u1_u2.conversiones_numericas import introduce_base, introduce_numero
 
 #
 # Pruebas para la función introduce_base()
@@ -133,7 +133,7 @@ def test_introduce_numero_invalid_with_error(mock_inputs, base, error_msg, monke
     "mock_inputs, base, error_msg",
     [
         (['ABC'], 2, "**ERROR** el número 'ABC' no es válido para la base binaria!\n"),  # Entrada inválida sin valor válido posterior
-        (['123G'], 16, "**ERROR** el número '123G' no es válido para la base hexadecimal!\n")  # Entrada inválida sin valor válido posterior
+        (['123G'], 16, "**ERROR** el número '123G' no es válido para la base hexadecimal!\n\n")  # Entrada inválida sin valor válido posterior
     ]
 )
 def test_introduce_numero_invalid_only(mock_inputs, base, error_msg, monkeypatch, capfd):
@@ -146,5 +146,5 @@ def test_introduce_numero_invalid_only(mock_inputs, base, error_msg, monkeypatch
 
     # Capturar la salida estándar y verificar si se imprimió el mensaje de error
     captured = capfd.readouterr()
-    assert error_msg in captured.out
+    assert error_msg == captured.out
 
