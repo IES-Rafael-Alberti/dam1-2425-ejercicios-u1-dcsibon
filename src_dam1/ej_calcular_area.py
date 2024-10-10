@@ -72,7 +72,7 @@ def main():
     lado_c = introduce_numero("Lado 3: ")
 
     # Agregamos esta comprobación matemática para no usar try-except que ya veremos más adelante
-    if comprobar_triangulo_valido:
+    if comprobar_triangulo_valido(lado_a, lado_b, lado_c):
         area = calcular_area(lado_a, lado_b, lado_c)
         print("El área del triángulo es {:.2f}".format(area))
     else:
