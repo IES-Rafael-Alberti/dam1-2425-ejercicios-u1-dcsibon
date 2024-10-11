@@ -1,10 +1,10 @@
 import math
 
 def tiene_mas_de_un_punto(valor: str):
+    # Buscaamos la posición del primero punto
     pos_primer_punto = valor.find(".")
 
-    # Ayer teníamos un error... 
-    # Faltaba comparar con >= 0 la expresión valor.find(".", pos_primer_punto + 1)
+    # Si existe un punto, buscamos alguno más
     if pos_primer_punto >= 0 and valor.find(".", pos_primer_punto + 1) >= 0:
         return True
     else:
@@ -16,13 +16,12 @@ def contiene_digitos(valor: str):
     # Podemos eliminar el punto para que solo queden dígitos y simplificar la comprobación.
     valor = valor.replace(".", "")
 
-    # También debemos comprobar que como mínimo tenga un dígito, 
-    # ya que no son números flotantes válidos los valores "", ".", "-" y "-."
-    return valor.isdigit() and len(valor) > 0
+    # Por tanto, si es un float la cadena resultante son solo dígitos
+    return valor.isdigit()
 
 
 def comprobar_numero_float(valor: str):
-    # Eliminamos el signo de la primera posición para las comprobaciones
+    # Eliminamos el signo menos de la primera posición si existe para las comprobaciones
     if valor[:1] == "-":
         valor = valor[1:]
     
@@ -56,7 +55,11 @@ def calcular_area(a, b, c):
 
 
 def introduce_numero(msj: str):
-    numero = input(msj).strip()
+    # Eliminamos los espacios el ppio y final de la cadena
+    # También reemplazamos coma por punto para que aceptar float con ambos ("6.77" o "6,77")
+    numero = input(msj).strip().replace(",", ".")
+
+    # Mientras la comprobación de número float no sea correcta permanece en el bucle
     while comprobar_numero_float(numero) == False:
         print("**ERROR** Número inválido")
         numero = input(msj).strip()    
@@ -74,9 +77,9 @@ def main():
     # Agregamos esta comprobación matemática para no usar try-except que ya veremos más adelante
     if comprobar_triangulo_valido(lado_a, lado_b, lado_c):
         area = calcular_area(lado_a, lado_b, lado_c)
-        print("El área del triángulo es {:.2f}".format(area))
+        print("El área del triángulo con lados ({:.2f}, {:.2f}, {:.2f}) es {:.2f}.".format(lado_a, lado_b, lado_c, area))
     else:
-        print("**ERROR** Los lados proporcionados ({:.2f}, {:.2f}, {:.2f}) no forman un triángulo válido.".format(lado_a, lado_b, lado_c))
+        print("El triángulo con lados ({:.2f}, {:.2f}, {:.2f}) no es válido!".format(lado_a, lado_b, lado_c))
 
 
 if __name__ == "__main__":
