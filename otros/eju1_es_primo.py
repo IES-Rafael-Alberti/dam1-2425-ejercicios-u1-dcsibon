@@ -14,6 +14,32 @@ def es_primo(numero):
     return True
 
 
+def es_primo_optimizado(numero):
+    """Comprueba si un número es primo.
+
+    Args:
+        numero (int): Número a comprobar.
+
+    Returns:
+        bool: True si el número es primo, False en caso contrario.
+    """
+    if numero <= 1:
+        return False
+    if numero == 2:  # 2 es el único número par que es primo
+        return True
+    if numero % 2 == 0:  # Todos los números pares mayores que 2 no son primos
+        return False
+
+    # Solo revisamos los números impares hasta la raíz cuadrada del número para mayor eficiencia
+    # Los números pares no son números primos ninguno, ya lo hemos comprobado en el "if" anterior
+    for i in range(3, int(math.sqrt(numero)) + 1, 2):
+        if numero % i == 0:
+            return False
+
+    return True
+
+
+
 def main():
     numero = int(input("Introduzca un número: "))
     print(f"El número {numero} {'SI es primo' if es_primo(numero) else 'NO es primo'}.")
