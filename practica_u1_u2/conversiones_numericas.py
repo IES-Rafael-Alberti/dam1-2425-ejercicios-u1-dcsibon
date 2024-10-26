@@ -203,7 +203,7 @@ def convertir_numero_a_otra_base(valor: str, base1: int, base2: int) -> str:
         if valor is None:  # Si hay un error, detener
             return None
 
-    return simbolo_primera_posicion + valor
+    return simbolo_primera_posicion + str(valor)
 
 
 def validar_base(base: str) -> bool:
@@ -216,7 +216,7 @@ def validar_base(base: str) -> bool:
     Returns:
         bool: True si la base es válida (2, 8, 10 o 16), False en caso contrario.
     """
-    return base in ('2', '8', '10', '16')
+    return base in "281016"
 
 
 def dame_nombre_base(base: int) -> str:
