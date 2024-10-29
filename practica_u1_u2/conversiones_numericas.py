@@ -5,9 +5,10 @@ BASE_BINARIA = 2
 BASE_OCTAL = 8
 BASE_DECIMAL = 10
 BASE_HEXADECIMAL = 16
-MENSAJE_ERROR_BASE_GENERAL = "**ERROR** no ha introducido una base correcta!\n"
-MENSAJE_ERROR_BASE_IGUAL = "**ERROR** La base de destino no puede ser igual a la base de origen ({base})."
-MENSAJE_ERROR_NUMERO = "**ERROR** el número '{numero}' no es válido para la base {base}!\n"
+MENSAJE_ERROR_BASE_GENERAL = "\n**ERROR** no ha introducido una base correcta!"
+MENSAJE_ERROR_BASE_IGUAL = "\n**ERROR** La base de destino no puede ser igual a la base de origen ({base})."
+MENSAJE_ERROR_NUMERO = "\n**ERROR** el número '{numero}' no es válido para la base {base}!"
+MENSAJE_ERROR_CONVERSION = "\n**ERROR** en la conversión: {error}"
 
 
 def limpiar_pantalla():
@@ -31,6 +32,19 @@ def realiza_pausa():
     ejecutándose o finalice.
     """
     input("\nPresione ENTER para continuar...")
+
+
+def mostrar_error(error = "", base = "", numero = ""):
+    """
+    """
+    if error != "":
+        print(MENSAJE_ERROR_CONVERSION.format(error = error))
+    elif base != "" and numero != "":
+        print(MENSAJE_ERROR_NUMERO.format(numero = numero, base = base))
+    elif base != "":
+        print(MENSAJE_ERROR_BASE_IGUAL.format(base = base))
+    else:
+        print(MENSAJE_ERROR_BASE_GENERAL)
 
 
 def es_valido_en_base(valor: str, base: int) -> bool:
@@ -132,7 +146,7 @@ def convertir_decimal_a_otra_base(valor: str, base: int) -> str:
 
         resultado += str(dame_simbolo(cociente))
     except ValueError as e:
-        print(f"**ERROR** en la conversión: {e}")
+        mostrar_error(error = e)
         return None
 
     return resultado[::-1]
@@ -165,7 +179,7 @@ def convertir_a_base_decimal(valor: str, base: int) -> int:
 
         return resultado
     except ValueError as e:
-        print(f"**ERROR** en la conversión a decimal: {e}")
+        mostrar_error(error = e)
         return None
 
 
@@ -264,11 +278,11 @@ def introduce_base(msj: str, permitir_entrada_vacia: bool = False, base_origen: 
         base_valida = validar_base(base)
         
         if base_valida and base_origen is not None and int(base) == base_origen:
-            print(MENSAJE_ERROR_BASE_IGUAL.format(base = dame_nombre_base(base_origen)))
+            mostrar_error(base = dame_nombre_base(base_origen))
             base_valida = False 
 
         if not base_valida:
-            print(MENSAJE_ERROR_BASE_GENERAL)
+            mostrar_error()
 
     return int(base)
 
@@ -292,7 +306,7 @@ def introduce_numero(msj: str, base: int) -> str:
         numero_valido = comprobar_valor_base(valor, base)
         
         if not numero_valido:
-            print(MENSAJE_ERROR_NUMERO.format(numero = valor, base = dame_nombre_base(base)))
+            mostrar_error(dame_nombre_base(base), valor)
 
     return valor
 
