@@ -5,6 +5,7 @@ BASE_BINARIA = 2
 BASE_OCTAL = 8
 BASE_DECIMAL = 10
 BASE_HEXADECIMAL = 16
+BASES_VALIDAS = (str(BASE_BINARIA), str(BASE_OCTAL), str(BASE_DECIMAL), str(BASE_HEXADECIMAL))
 MENSAJE_ERROR_BASE_GENERAL = "\n**ERROR** no ha introducido una base correcta!"
 MENSAJE_ERROR_BASE_IGUAL = "\n**ERROR** La base de destino no puede ser igual a la base de origen ({base})."
 MENSAJE_ERROR_NUMERO = "\n**ERROR** el número '{numero}' no es válido para la base {base}!"
@@ -14,13 +15,12 @@ MENSAJE_ERROR_CONVERSION = "\n**ERROR** en la conversión: {error}"
 def limpiar_pantalla():
     """
     Limpia la consola según el sistema operativo.
-    
-    En sistemas Windows utiliza el comando 'cls', en Linux o macOS utiliza 'clear'.
     """
-    if os.name == 'nt':
-        os.system('cls')
-    else:
-        os.system('clear')
+    try:
+        comando = 'clear' if os.name == 'posix' else 'cls'
+        os.system(comando)
+    except Exception as e:
+        mostrar_error(solo_mensaje = True, error = f"Problemas al intentar limpiar la pantalla: {e}")
 
 
 def realiza_pausa():
@@ -34,14 +34,16 @@ def realiza_pausa():
     input("\nPresione ENTER para continuar...")
 
 
-def mostrar_error(error = "", base = "", numero = ""):
+def mostrar_error(solo_mensaje = False, error = None, base = None, numero = None):
     """
     """
-    if error != "":
+    if solo_mensaje:
+        print(error)
+    elif error != None:
         print(MENSAJE_ERROR_CONVERSION.format(error = error))
-    elif base != "" and numero != "":
+    elif base != None and numero != None:
         print(MENSAJE_ERROR_NUMERO.format(numero = numero, base = base))
-    elif base != "":
+    elif base != None:
         print(MENSAJE_ERROR_BASE_IGUAL.format(base = base))
     else:
         print(MENSAJE_ERROR_BASE_GENERAL)
@@ -220,7 +222,7 @@ def convertir_numero_a_otra_base(valor: str, base1: int, base2: int) -> str:
     return simbolo_primera_posicion + str(valor)
 
 
-def validar_base(base: str) -> bool:
+def validar_base(base: str, base_origen = None) -> bool:
     """
     Verifica si la base introducida es válida.
 
@@ -230,7 +232,7 @@ def validar_base(base: str) -> bool:
     Returns:
         bool: True si la base es válida (2, 8, 10 o 16), False en caso contrario.
     """
-    return base in "281016"
+    return base != "" and base in BASES_VALIDAS
 
 
 def dame_nombre_base(base: int) -> str:
@@ -267,7 +269,6 @@ def introduce_base(msj: str, permitir_entrada_vacia: bool = False, base_origen: 
         int: La base numérica seleccionada o None si la entrada está vacía.
     """
     base_valida = False
-    base = None
     
     while not base_valida:
         base = input(msj).strip()
@@ -277,14 +278,15 @@ def introduce_base(msj: str, permitir_entrada_vacia: bool = False, base_origen: 
         
         base_valida = validar_base(base)
         
-        if base_valida and base_origen is not None and int(base) == base_origen:
-            mostrar_error(base = dame_nombre_base(base_origen))
-            base_valida = False 
-
-        if not base_valida:
+        if base_valida:
+            base = int(base)
+            if base_origen != None and base == base_origen:
+                mostrar_error(base = dame_nombre_base(base_origen))
+                base_valida = False
+        else:
             mostrar_error()
 
-    return int(base)
+    return base
 
 
 def introduce_numero(msj: str, base: int) -> str:
@@ -306,7 +308,7 @@ def introduce_numero(msj: str, base: int) -> str:
         numero_valido = comprobar_valor_base(valor, base)
         
         if not numero_valido:
-            mostrar_error(dame_nombre_base(base), valor)
+            mostrar_error(base = dame_nombre_base(base), numero = valor)
 
     return valor
 
@@ -322,7 +324,7 @@ def desea_salir() -> bool:
     return salir in {'S', 'SI', 'Y', 'YES'}
 
 
-def realizar_conversion() -> bool:
+def conversion_de_base() -> bool:
     """
     Gestiona el proceso de conversión de un número de una base a otra.
 
@@ -334,8 +336,10 @@ def realizar_conversion() -> bool:
 
     Returns:
         bool: True si la conversión se realizó con éxito, False si hubo algún error.
-               Devuelve None si el usuario decide salir del programa al introducir
-               una cadena vacía para la base de origen.
+
+    Note:
+        Devuelve None si el usuario decide salir del programa al introducir
+        una cadena vacía para la base de origen.
     """
     limpiar_pantalla()
     
@@ -368,7 +372,7 @@ def main():
     salir = False
 
     while not salir:
-        exito = realizar_conversion()
+        exito = conversion_de_base()
         
         if exito:
             contador_conversiones += 1
@@ -381,6 +385,32 @@ def main():
         print("\nNo has realizado ninguna conversión.\n")
 
 
+# Ideas para que hagan los alumnos:
+#
+# 1. Cambiar la base decimal a D (en vez de tener que introducir 10)
+#    y la hexadecimal a H (en vez de introducir 16)
+# NO... Muchos cambios y muy difícil. Lo van a hacer en plan porrillero y no mola.
+#
+# 2. Crear un menú con 3 opciones:
+#    1 - Conversión de base.
+#    2 - Conversión a todas las bases.
+#    3 - Detectar la base del número.
+#    ENTER para Salir
+#
+# 3. Todas las opciones una vez en ejecución deben volver al menú cómo lo 
+#    hace "1 - Conversión de base" actualmente, es decir, siempre está en 
+#    bucle hasta que se pulsa ENTER con la entrada vacía, el programa 
+#    preguntará "¿Desea salir del programa? (S/N)" y solo volverá si 
+#    contesta "s" o "S".
+#
+# 3. Realizar el desarrollo de los puntos 2 y 3.
+#
+# 4. Corregir errores en 3 funciones.
+#
+# 5. Desarrollar parcialmente 2 funciones.
+#
+# 6. Desarrollar completamente 2 funciones.
+#
 
 if __name__ == "__main__":
     main()
