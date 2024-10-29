@@ -24,6 +24,7 @@ def introduce_numero(msj: str) -> float:
     # Eliminamos los espacios el ppio y final de la cadena
     # También reemplazamos coma por punto para que aceptar float con ambos ("6.77" o "6,77")
     valor = input(msj).strip().replace(",", ".")
+    unificar_simbolos_decimales_seguidos(valor)
 
     # Mientras la comprobación de número float no sea correcta permanece en el bucle
     while not comprobar_float(valor):
@@ -49,6 +50,12 @@ def comprobar_triangulo_valido(a, b, c):
         b + c > a
     """    
     return (a + b > c) and (a + c > b) and (b + c > a)
+
+
+def unificar_simbolos_decimales_seguidos(valor: str) -> str:
+    total_posibles_simbolos_seguidos = len(valor) - 1
+    for i in range(total_posibles_simbolos_seguidos, 1, -1):
+        print(i)
 
 
 def main():

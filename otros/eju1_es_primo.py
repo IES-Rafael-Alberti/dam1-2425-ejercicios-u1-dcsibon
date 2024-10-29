@@ -1,9 +1,40 @@
 import math
 
-def es_primo(numero):
+def es_primo_basico(numero):
     """
     Si un número no es primo, tendrá un divisor entero que será menor o igual a su raíz cuadrada y mayor que 1.
     """
+    if numero < 2:
+        return False
+    
+    cont_divisores = 0
+    for i in range(1, numero + 1):
+        if numero % i == 0:
+            cont_divisores += 1
+
+    if cont_divisores > 2:
+        return False
+    else:
+        return True
+
+def es_primo_basico2(numero):
+    """
+    Si un número no es primo, tendrá un divisor entero que será menor o igual a su raíz cuadrada y mayor que 1.
+    """
+    if numero < 2:
+        return False
+    
+    for i in range(2, numero):
+        if numero % i == 0:
+            return False
+
+    return True
+
+def es_primo_optimizado1(numero):
+    """
+    Si un número no es primo, tendrá un divisor entero que será menor o igual a su raíz cuadrada y mayor que 1.
+    """
+
     if numero < 2:
         return False
 
@@ -12,7 +43,6 @@ def es_primo(numero):
             return False
 
     return True
-
 
 def es_primo_optimizado(numero):
     """Comprueba si un número es primo.
@@ -37,7 +67,6 @@ def es_primo_optimizado(numero):
             return False
 
     return True
-
 
 
 def main():
