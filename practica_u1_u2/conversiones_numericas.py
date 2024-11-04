@@ -222,7 +222,7 @@ def convertir_numero_a_otra_base(valor: str, base1: int, base2: int) -> str:
     return simbolo_primera_posicion + str(valor)
 
 
-def validar_base(base: str, base_origen = None) -> bool:
+def validar_base(base: str) -> bool:
     """
     Verifica si la base introducida es válida.
 
