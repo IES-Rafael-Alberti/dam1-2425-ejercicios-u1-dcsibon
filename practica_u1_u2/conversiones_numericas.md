@@ -1,6 +1,6 @@
 # Conversiones numéricas.
 
-1. Crear una función que convierta un número de base binaria a base decimal. Para ello debemos poedir un número, comprobar que es válido para la base binaria y después llamaríamos a la función convertir_binario_decimal(numero) o damos el mensaje de error correspondiente.
+1. Crear una función que convierta un número de base binaria a base decimal. Para ello debemos pedir un número, comprobar que es válido para la base binaria y después llamaríamos a la función convertir_binario_decimal(numero) o damos el mensaje de error correspondiente.
 
 2. Crear una función que convierta un número de base decimal a binaria.
 
